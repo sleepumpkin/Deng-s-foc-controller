@@ -1,9 +1,8 @@
 /**
-Copyright Deng（灯哥） (ream_d@yeah.net)  Py-apple dog project
-Github:https:#github.com/ToanTech/py-apple-quadruped-robot
-Licensed under the Apache License, Version 2.0 (the "License")
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at:http:#www.apache.org/licenses/LICENSE-2.0
+Deng's FOC 电压力矩控制例程 测试库：SimpleFOC 2.1.1 测试硬件：灯哥开源FOC V1.0
+上电后，两个电机的力矩值已经分别设置为3和-3，会各自反方向转动
+在使用自己的电机时，请一定记得修改默认极对数，即 BLDCMotor(7) 中的值，设置为自己的极对数数字
+程序默认设置的供电电压为 7.4V,用其他电压供电请记得修改 voltage_power_supply , voltage_limit 变量中的值
  */
 #include <SimpleFOC.h>
 
@@ -32,33 +31,31 @@ void setup() {
 
   // driver config
   // power supply voltage [V]
-  driver.voltage_power_supply = 12.6;
+  driver.voltage_power_supply = 7.4;
   driver.init();
 
-  driver1.voltage_power_supply = 12.6;
+  driver1.voltage_power_supply = 7.4;
   driver1.init();
   // link the motor and the driver
   motor.linkDriver(&driver);
   motor1.linkDriver(&driver1);
   
   // set motion control loop to be used
-  motor.controller = ControlType::voltage;
-  motor1.controller = ControlType::voltage;
+  motor.controller = MotionControlType::torque;
+  motor1.controller = MotionControlType::torque;
 
   // contoller configuration 
   // default parameters in defaults.h
 
 
   // maximal voltage to be set to the motor
-  motor.voltage_limit = 12.6;
-  motor1.voltage_limit = 12.6;
+  motor.voltage_limit = 7.4;
+  motor1.voltage_limit = 7.4;
   // use monitoring with serial 
   Serial.begin(115200);
   // comment out if not needed
   motor.useMonitoring(Serial);
   motor1.useMonitoring(Serial);
-  //记录无刷初始位置
-
   
   //初始化电机
   motor.init();
@@ -77,10 +74,6 @@ void loop() {
   motor.loopFOC();
   motor1.loopFOC();
 
-  motor.move( 5*(motor1.shaft_angle - motor.shaft_angle));
-  motor1.move( 5*(motor.shaft_angle - motor1.shaft_angle));
-}
-
-float dead_zone(float x){
-  return abs(x) < 0.2 ? 0 : x;
+  motor.move(3);
+  motor1.move(-3);
 }

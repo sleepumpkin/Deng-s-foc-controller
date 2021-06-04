@@ -1,14 +1,10 @@
 /**
-Copyright Deng（灯哥） (ream_d@yeah.net)  Py-apple dog project
-Github:https:#github.com/ToanTech/py-apple-quadruped-robot
-Licensed under the Apache License, Version 2.0 (the "License")
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at:http:#www.apache.org/licenses/LICENSE-2.0
-在串口中输入：电机1位置,电机2位置 即可实现对电机的闭环控制
-在此例程中闭环采用的编码器是as5600
-如让两个电机都转180度，你可以在串口中输入
-3.14,3.14
-然后回车，即可
+灯哥 Py-apple dog project--无刷四足机器人 Deng'FOC 端程序
+具体使用方法请见无刷狗 Github：
+https://github.com/ToanTech/py-apple-bldc-quadruped-robot
+在使用自己的电机时，请一定记得修改默认极对数，即 BLDCMotor(7) 中的值，设置为自己的极对数数字
+程序默认设置的供电电压为 7.4V,用其他电压供电请记得修改 voltage_power_supply , voltage_limit 变量中的值
+默认PID针对的电机是 Ipower 4008 ，使用自己的电机需要修改PID参数，才能实现更好效果
  */
 #include <SimpleFOC.h>
 double init_p_sensor=0;
@@ -41,10 +37,10 @@ void setup() {
 
   // driver config
   // power supply voltage [V]
-  driver.voltage_power_supply = 12.6;
+  driver.voltage_power_supply = 16.8;
   driver.init();
 
-  driver1.voltage_power_supply = 12.6;
+  driver1.voltage_power_supply = 16.8;
   driver1.init();
   // link the motor and the driver
   motor.linkDriver(&driver);
@@ -54,8 +50,8 @@ void setup() {
   motor.foc_modulation = FOCModulationType::SpaceVectorPWM;
   motor1.foc_modulation = FOCModulationType::SpaceVectorPWM;
   // set motion control loop to be used
-  motor.controller = ControlType::angle;
-  motor1.controller = ControlType::angle;
+  motor.controller = MotionControlType::angle;
+  motor1.controller = MotionControlType::angle;
 
   // contoller configuration 
   // default parameters in defaults.h
@@ -66,8 +62,8 @@ void setup() {
   motor.PID_velocity.I = 20;
   motor1.PID_velocity.I = 20;
   // maximal voltage to be set to the motor
-  motor.voltage_limit = 12.6;
-  motor1.voltage_limit = 12.6;
+  motor.voltage_limit = 16.8;
+  motor1.voltage_limit = 16.8;
   
   // velocity low pass filtering time constant
   // the lower the less filtered
@@ -97,13 +93,12 @@ void setup() {
   motor.initFOC();
   motor1.initFOC();
 
-
+  _delay(1000);
   Serial.println("Motor ready.");
   init_p_sensor=sensor.getAngle();
   init_p_sensor1=sensor1.getAngle();
   Serial.println(init_p_sensor);
   Serial.println(init_p_sensor1);
-  _delay(1000);
   
 }
 
@@ -114,9 +109,9 @@ String serialReceiveUserCommand() {
   
   String command = "";
 
-  while (Serial.available()) {
+  while (Serial2.available()) {
     // get the new byte:
-    char inChar = (char)Serial.read();
+    char inChar = (char)Serial2.read();
     // add it to the string buffer:
     received_chars += inChar;
 
@@ -126,14 +121,15 @@ String serialReceiveUserCommand() {
       // execute the user command
       command = received_chars;
 
-      //根据逗号分离两组字符串
-      //想象中双足轮通讯数据格式:高度,指令   指令格式：英文+值
       commaPosition = command.indexOf(',');//检测字符串中的逗号
       if(commaPosition != -1)//如果有逗号存在就向下执行
       {
-          motor1_angle = command.substring(0,commaPosition).toDouble();            //一号电机角度
+          motor1_angle = command.substring(0,commaPosition).toDouble();            //电机角度
           motor2_angle = command.substring(commaPosition+1, command.length()).toDouble();//打印字符串，从当前位置+1开始
+          //Serial.println(motor1_angle);
+          //Serial.println(motor2_angle);
       }
+      // reset the command buffer 
       received_chars = "";
     }
   }
@@ -142,12 +138,9 @@ String serialReceiveUserCommand() {
 
 
 void loop() {
-
   motor.loopFOC();
   motor1.loopFOC();
-
-  motor.move(init_p_sensor+motor1_angle);
-  motor1.move(init_p_sensor1+motor2_angle); 
+  motor.move(-init_p_sensor+motor1_angle);
+  motor1.move(-init_p_sensor1+motor2_angle); 
   serialReceiveUserCommand();
-
 }
