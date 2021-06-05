@@ -22,7 +22,7 @@
 
 - **控制模式丰富**：开/闭环 速度、位置；以及开环的基于力矩控制；两种FOC内核算法
 
-- **图形化配置软件：**最新的 DengFOC 对应支持使用 **SimpleFOC Studio** 进行电机参数配置，如下图所示，配置方法请见 文档PDF
+- **图形化配置软件**:最新的 DengFOC 对应支持使用 **SimpleFOC Studio** 进行电机参数配置，如下图所示，配置方法请见 文档PDF
 
   ![image1](https://github.com/ToanTech/Deng-s-foc-controller/blob/main/pic/SimpleFOC_Studio.gif)
 
