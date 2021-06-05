@@ -140,7 +140,7 @@ String serialReceiveUserCommand() {
 void loop() {
   motor.loopFOC();
   motor1.loopFOC();
-  motor.move(-init_p_sensor+motor1_angle);
-  motor1.move(-init_p_sensor1+motor2_angle); 
+  motor.move(-init_p_sensor-motor1_angle);
+  motor1.move(-init_p_sensor1-motor2_angle); 
   serialReceiveUserCommand();
 }
