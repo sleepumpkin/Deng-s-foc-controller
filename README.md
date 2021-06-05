@@ -8,7 +8,7 @@
 
 * 开源工作不易，希望大家多点 Star ,视频多一键三联！！！
 
-![image1](https://github.com/ToanTech/Deng-s-foc-controller/blob/main/pic/PAFOC_front.jpg)
+![image1](/pic/PAFOC_front.jpg)
 
 ## 2 软件特性（支持 SimpleFOC库 2.1.1）
 
@@ -39,13 +39,14 @@
 | 编码器支持   | IIC方式、ABI方式、PWM方式编码器(AS5600、AS5047、AS5048等) |
 | 拓展接口     | 串口（可以通过串口对FOC板子进行控制）                     |
 
-## 3 接口说明
+## 3 社区
 
-本项目所使用的ESP32开发板，型号为lolin32 lite。板子接口引脚简图如下，更多请参照B站和论坛教程：
-![image1](https://github.com/ToanTech/Deng-s-foc-controller/blob/main/pic/pafoc_interface.jpg)
+本FOC板子社区为一Q群，欢迎加入：**开源FOC无刷驱动交流群 灯哥开源 群号 778255240**
+
+任何使用问题和 DIY 问题 都会在这里做直接的讨论解答
 
 ## 4 项目文件说明
 
 * Dengs FOC V1.0 DIY资料：BOM、原理图、PCB、Gerber
 * Dengs FOC V1.0 测试例程：8个灯哥开源FOC开环、闭环、应用方面的测试视频
-* 灯哥开源FOC专用 Arduino 编程环境：我整合好的可以直接用于开发此 FOC 的编程环境，详细使用方法请见论坛中的教程
+* 灯哥开源 FOC 使用文档 PDF：**配置的详细方式和使用教程**
