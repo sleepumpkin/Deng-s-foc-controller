@@ -1,0 +1,10 @@
+配置说明
+首先下载并解压本文件夹中全部文件，保罗所有zip和z0x后缀的文件
+由于是分卷压缩，不下载完全是无法成功解压的
+下载完成后，解压” 灯哥开源FOC专用 Arduino 编程环境.zip “文件所有分卷文件就会自动解压
+
+"to Program Files" 文件夹中的内容复制到 C:\Program Files (x86)
+"to Documents" 文件夹中的内容复制到 C:\Users\你的电脑用户名\Documents\Arduino
+"to Local"文件夹中的内容复制到 C:\Users\你的电脑用户名\AppData\Local
+
+完成这三步后，点击 C:\Program Files (x86)\Arduino 中的 arduino.exe 即可打开软件，开始编译例程，愉快的玩耍
